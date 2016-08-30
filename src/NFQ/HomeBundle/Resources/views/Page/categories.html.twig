@@ -1,0 +1,40 @@
+{% extends '::PageBase.html.twig' %}
+{% block mainContent %}
+    <div class="container">
+        <div class="content">
+            <div class="content-top-grid">
+                <div class="content-top-in">
+                    <h1>{{ category.categoryName }}</h1>
+                    <ul class="list-inline">
+                        {% for event in category.events %}
+                            <li class="col-md-4" style = "height: 36em">
+                                <div class="simply" style="margin-bottom: 50px">
+                                    <a class="event-info" href="{{ path('nfq_home_event_info', {'facebookEventId':event.facebookEvent.facebookEventId}) }}">
+                                        <img class = "img-responsive"  src = "{{ event.eventImageUrl }}" />
+                                    </a>
+                                    <h4>
+                                        <a href="{{ path('nfq_home_event_info', {'facebookEventId': event.facebookEvent.facebookEventId}) }}">
+                                            {{ event.eventName|slice(0, 75) ~ '' }}
+                                        </a>
+                                    </h4>
+                                    <h5 style="color: #ffffff; font-size: 120%"><b>Dalyvių skaičius: {{ event.facebookEvent.attendingCount}}</b></h5>
+                                    <p>{{ event.facebookEvent.description|slice(0, 170) ~ '...' }}</p>
+                                    {# <p>{{ event.facebookEvent.street }}</p> #}
+                                    <a href="{{ path('nfq_home_event_info', {'facebookEventId':event.facebookEvent.facebookEventId}) }}" class="hvr-sweep-to-right">Daugiau</a>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+            <link rel="stylesheet" href={{ asset('css/swipebox.css')}} />
+            <script src={{ asset('js/jquery.swipebox.min.js')}}></script>
+            <script type="text/javascript">
+                jQuery(function($) {
+                    $(".swipebox").swipebox();
+                });
+            </script>
+        </div>
+    </div>
+{% endblock %}

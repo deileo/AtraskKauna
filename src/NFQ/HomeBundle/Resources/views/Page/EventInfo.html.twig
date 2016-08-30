@@ -1,0 +1,144 @@
+{% extends '::PageBase.html.twig' %}
+{% block mainContent %}
+    <div class="container">
+        <div class="content">
+            <div class="single">
+                <div class="blog-top-in">
+                    <div class="col-md-4 top-blog" >
+                        <a class="event-info" href="#"><img class="img-responsive" src="{{ Event.event.eventImageUrl }}" alt="" ></a>
+                        <a href="{{ relative_path('/login/facebook') }}"
+                           data-success-message="Gerų įspūdžių!"
+                           class="hvr-sweep-to-right
+                           event-attend {% if app.user %}active{% endif %}
+                           {% if isCurrentUserGoing %}
+                                attended">Atšaukti</a>
+                           {% else %}
+                               ">Dalyvauti</a>
+                           {% endif %}
+                        {% if Event.ticketUrl  %}
+                            <a href="{{ Event.ticketUrl }}" target="_blank" class="hvr-sweep-to-right event-tickets">Pirkti bilietus</a>
+                        {% endif %}
+                        <div id="googleMap"></div>
+                    </div>
+                    <div class="col-md-8 sed-in">
+                        <div class = "product">
+                            <h4>{{ Event.event.eventName }}</h4>
+                            <h5 style="color: #787878">Dalyvių skaičius:</h5>
+                            <h4> {{ Event.attendingCount }}</h4>
+                            <h5 style="color: #787878"> Adresas:</h5>
+                            <h4> {{ Event.street }}</h4>
+                            <h5 style="color: #787878"> Prasideda: </h5>
+                            <h4> {{ Event.startTime | date('Y-m-d H:i') }}</h4>
+                            {% if Event.endTime %}
+                                <h5 style="color: #787878"> Baigiasi: </h5>
+                                <h4> {{ Event.endTime | date('Y-m-d H:i') }}</h4>
+                            {% endif %}
+                        </div>
+                        <p> {{ Event.description }}</p>
+                    </div>
+                    <div class="clearfix"> </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function initialize() {
+            var myLatLng = {lat: {{ Event.latitude }}, lng: {{ Event.longitude}}};
+            var map=new google.maps.Map(document.getElementById("googleMap"), {
+                zoom: 15,
+                center: myLatLng,
+                mapTypeId:google.maps.MapTypeId.ROADMAP
+            });
+            var contentString = '<div id="content">'+
+                    '<p> <b> Renginys:  </b>{{ Event.event.eventName }} </p>'+
+                    '<p> <b> Dalyvių skaičius:  </b>{{ Event.attendingCount }} </p>'+
+                    '<p> <b> Adresas: </b> {{ Event.street }}</p>'+
+                    '<p> <b> Laikas: </b> {{ Event.event.facebookEvent.startTime | date('Y-m-d H:i') }}</p>'+
+                    '</div>';
+            var infowindow = new google.maps.InfoWindow({
+                content: contentString
+            });
+            var marker=new google.maps.Marker({
+                position:myLatLng
+            });
+            marker.setMap(map);
+            marker.addListener('mouseover', function() {
+                infowindow.open(map, marker);
+            });
+            marker.addListener('mouseout', function() {
+                infowindow.close();
+            });
+
+        }
+
+        function loadScript()
+        {
+            var script = document.createElement("script");
+            script.type = "text/javascript";
+            script.src = "http://maps.googleapis.com/maps/api/js?key=&sensor=false&callback=initialize";
+            document.body.appendChild(script);
+
+        }
+        window.onload = loadScript;
+
+        $(document).ready(function(){
+            (function($){
+                var attendButton = $('.event-attend.active');
+
+                attendButton.on('click', function(e) {
+                    if(attendButton.hasClass('attended')){
+                        e.preventDefault();
+                        swal({
+                            title: "Atšaukti dalyvavimą?",
+                            type: "info",
+                            showCancelButton: true,
+                            closeOnConfirm: false,
+                            showLoaderOnConfirm: true
+                        },function() {
+                            $.ajax({
+                                method: 'GET',
+                                url: "{{ path('nfq_facebook_event_cancel', { 'facebook_event_id': facebookEventId }) }}",
+                                dataType: 'json',
+                                success: function (data) {
+                                    if (data != false) {
+                                        attendButton.removeClass('attended');
+                                        $('.event-attend').html('Dalyvauti');
+                                        swal('Atšaukta!','', 'success');
+                                    }
+                                }
+                            })
+                        });
+                    }else {
+                        e.preventDefault();
+
+                        swal({
+                            title: "Norite dalyvauti?",
+                            text: "Patvirtinkite savo dalyvavimą.",
+                            type: "info",
+                            showCancelButton: true,
+                            closeOnConfirm: false,
+                            showLoaderOnConfirm: true
+                        }, function () {
+                            $.ajax({
+                                method: 'GET',
+                                url: "{{ path('nfq_facebook_event_attend', { 'facebook_event_id': facebookEventId }) }}",
+                                dataType: 'json'
+                            }).done(function (response) {
+                                if (response.success === true) {
+                                    swal(attendButton.data('success-message'), '', 'success');
+                                    attendButton.addClass('attended');
+                                    $('.event-attend').html('Atšaukti');
+                                }
+                                else {
+                                    swal('Klaida!', response.message, 'error');
+                                    console.log(response);
+                                }
+                            });
+                        });
+                    }
+                });
+            })(window.jQuery);
+        });
+
+    </script>
+{% endblock %}

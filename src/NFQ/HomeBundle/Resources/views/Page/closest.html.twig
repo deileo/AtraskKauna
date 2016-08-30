@@ -1,0 +1,56 @@
+{% extends '::PageBase.html.twig' %}
+{% block mainContent %}
+    <div class="container">
+        <div class="content">
+            <div class="single">
+                <div id="googleMap"  style="margin-top:20px; height: 500px;"></div>
+                </div>
+        </div>
+    </div>
+    <script>
+            function initialize() {
+                var myLatLng = {lat: 54.901948, lng: 23.911183};
+                var map = new google.maps.Map(document.getElementById("googleMap"), {
+                    zoom: 14,
+                    center: myLatLng,
+                    mapTypeId: google.maps.MapTypeId.ROADMAP
+                });
+                var infowindow = new google.maps.InfoWindow({
+                    content: ""
+                });
+                {% for event in events %}
+                {% if event.facebookEvent.latitude %}
+                this.marker = new google.maps.Marker({
+                    position: new google.maps.LatLng({{ event.facebookEvent.latitude }}, {{ event.facebookEvent.longitude }}),
+                    map: map
+                });
+                this.marker.addListener('mouseover', function() {
+                    infowindow.setContent('<div id="content">'+
+                    '<p> <b> Renginys:  </b>{{ event.eventName }} </p>'+
+                    '<p> <b> Dalyvių skaičius:  </b>{{ event.facebookEvent.attendingCount }} </p>'+
+                    '<p> <b> Adresas: </b> {{ event.facebookEvent.street }}</p>'+
+                    '<p> <b> Laikas: </b> {{ event.facebookEvent.startTime | date('Y-m-d H:i') }}</p>'+
+                    '<p> <a href = "{{ path('nfq_home_event_info', {'facebookEventId':event.facebookEvent.facebookEventId}) }}"> Daugiau</a></p>'+
+                    '</div>');
+                    infowindow.open(map, this);
+                });
+                this.marker.addListener('mouseout',function(){
+                    infowindow.close(map,this);
+                });
+                this.marker.addListener('click', function () {
+                    window.location.href = "{{ path('nfq_home_event_info', {'facebookEventId':event.facebookEvent.facebookEventId}) }}";
+                });
+                {% endif %}
+                {% endfor %}
+            }
+            function loadScript() {
+                var script = document.createElement("script");
+                script.type = "text/javascript";
+                script.src = "http://maps.googleapis.com/maps/api/js?key=&sensor=false&callback=initialize";
+                document.body.appendChild(script);
+
+            }
+
+            window.onload = loadScript;
+    </script>
+{% endblock %}

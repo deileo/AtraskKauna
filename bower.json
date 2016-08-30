@@ -1,0 +1,25 @@
+{
+  "name": "Kas_vyksta_Kaune",
+  "homepage": "https://github.com/nfq-akademija-2015-ruduo/Kas_vyksta_Kaune",
+  "authors": [
+    "Vaidas <shibalba1@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "moduleType": [
+    "es6"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "web/js",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.4",
+    "sweetalert": "~1.1.3"
+  }
+}

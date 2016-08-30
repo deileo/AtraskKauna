@@ -1,0 +1,35 @@
+{% extends '::PageBase.html.twig' %}
+{% block mainContent %}
+<div class="container">
+    <div class="content">
+        <div class="content-top-grid">
+            <h3>Jūsų Renginiai</h3>
+            <div class="content-top-in">
+                <ul class="list-inline">
+                    {% for event in events %}
+                        <li class="col-md-4" style = "height: 36em">
+                            <div class="simply" style="margin-bottom: 50px">
+                                <a href="{{ path('nfq_home_event_info', {'facebookEventId':event.facebookEvent.facebookEventId}) }}">
+                                    <img class = "img-responsive"  src = "{{ event.eventImageUrl }}" />
+                                </a>
+
+                                <h4>
+                                    <a href="{{ path('nfq_home_event_info', {'facebookEventId': event.facebookEvent.facebookEventId}) }}">
+                                        {{ event.eventName|slice(0, 75) ~ '' }}
+                                    </a>
+                                </h4>
+                                <p>{{ event.facebookEvent.description|slice(0, 170) ~ '...' }}</p>
+                                {#<p>{{ event.facebookEvent.street }}</p>#}
+                                {#<p>{{ event.facebookEvent.attendingCount }}</p>#}
+                                <a href="{{ path('nfq_home_event_info', {'facebookEventId':event.facebookEvent.facebookEventId}) }}" class="hvr-sweep-to-right">Daugiau</a>
+                                <a href="#" class="hvr-sweep-to-right">Pašalinti</a>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

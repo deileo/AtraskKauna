@@ -1,0 +1,10 @@
+services:
+#    nfqkvk_scraper.example:
+#        class: NFQ\KVKScraperBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]
+    facebook_event_manager:
+        class: NFQ\KVKScraperBundle\Services\FacebookEventManager
+        arguments: [@service_container, @doctrine.orm.entity_manager, @session]
+    kvk_scraper:
+        class: NFQ\KVKScraperBundle\Services\KVKScraper
+        arguments: [@service_container]

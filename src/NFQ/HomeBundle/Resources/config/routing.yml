@@ -1,0 +1,24 @@
+nfq_home_homepage:
+    path:     /
+    defaults: { _controller: NFQHomeBundle:Page:index}
+
+nfq_home_closest:
+   path:    /closest/{time}
+   defaults: { _controller: NFQHomeBundle:Page:Closest }
+
+nfq_home_event_info:
+   path: /EventInfo/{facebookEventId}
+   defaults: { _controller: NFQHomeBundle:Page:EventInfo }
+
+
+nfq_facebook_event_attend:
+   path:    /facebook/attend/{facebook_event_id}
+   defaults: { _controller: NFQHomeBundle:Facebook:attendEvent }
+
+nfq_home_categories:
+   path: /category/{categoryId}
+   defaults: { _controller: NFQHomeBundle:Page:categories }
+
+nfq_facebook_event_cancel:
+   path: /facebook/cancel/{facebook_event_id}
+   defaults: { _controller: NFQHomeBundle:Facebook:cancelEvent }

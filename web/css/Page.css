@@ -1,0 +1,116 @@
+html {
+    position:relative;
+    min-height: 100%;
+}
+
+hr{
+    line-height: 200%;
+
+}
+
+#footer{
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    overflow: hidden;
+    width: 100%;
+
+}
+
+.navbar{
+    margin: 0;
+    font-size: 16px;
+}
+
+.navbarStyle{
+    background-color: #0000F0; !important;
+}
+
+
+body {
+    height: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+
+.jumbotron{
+    height: 200px;
+}
+
+.action-style {
+    width: 200px;
+    background-color: #222;
+    border-color: #080808;
+    color: white;
+}
+
+.action-style:hover{
+    background-color: #f8f8f8;
+    color: #222;
+}
+
+#content{
+    margin-left: 50px;
+    margin-right: 50px;
+    margin-bottom: 100px;
+}
+
+.Main-page-header{
+    height: 60px;
+    margin-bottom: 20px;
+}
+
+.header-lines-pos{
+    margin-top: 20px;
+}
+
+.event{
+    border: 1px solid black;
+    height: 200px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+}
+
+#checkBox{
+
+    position: absolute;
+    left: 80px;
+    top: 0px;
+    zoom: 3;
+}
+
+#eventInfo{
+    background-color: #f8f8f8;
+    min-width: 60%;
+    max-width: 800px;
+    clear: both;
+    float: left;
+    margin-top: 20px;
+    border-radius: 10px;
+}
+
+#eventLocPart{
+    background-color: #f8f8f8;
+    min-width: 30%;
+    max-width: 800px;
+    float: right;
+    margin-top: 20px;
+    border-radius: 10px;
+}
+
+#goingButton{
+    float: right;
+    padding-right: 20%;
+}
+
+.footerStyle{
+    color: white; !important;
+}
+
+hr{
+    width: 100%;
+    color: black;
+    height: 1px;
+    background-color:black;
+}
